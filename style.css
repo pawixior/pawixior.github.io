@@ -2,9 +2,10 @@
   box-sizing: border-box;
 }
 /* Add styles for dark mode */
+
 body.dark-mode {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #1a1a1a;
+    color: #ffffff;
   overflow: hidden;
 }
 
@@ -15,8 +16,8 @@ body.dark-mode {
 
 /* Add styles for light mode */
 body.light-mode {
-      background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #000000;
   overflow: hidden;
 }
 
