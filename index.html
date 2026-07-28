@@ -1,64 +1,566 @@
-
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title> Doggo, Interactive Notion Companion by Notion Avenue</title>
-  <link rel="stylesheet" href="./style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Zagrajmy w grę</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    font-family: "Courier New", monospace;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(circle at center, #1b2735 0%, #05070b 70%);
+
+    color: #d6ffd9;
+}
+
+
+/* Fog */
+
+body::before,
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    width: 200%;
+    height: 200%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(180,220,220,0.12),
+            transparent 60%
+        );
+
+    animation: fog 18s linear infinite;
+
+    pointer-events: none;
+}
+
+body::after {
+
+    animation-duration: 30s;
+    animation-direction: reverse;
+    opacity: .5;
+}
+
+
+@keyframes fog {
+
+    from {
+        transform: translate(-20%, -10%);
+    }
+
+    to {
+        transform: translate(20%, 10%);
+    }
+
+}
+
+
+.container {
+
+    position: relative;
+    z-index: 2;
+
+    width: 600px;
+
+    margin: 40px 20px;
+    padding: 45px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(5,12,18,.78);
+
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(150,255,200,.15);
+
+    box-shadow:
+        0 0 40px rgba(0,255,150,.15);
+
+    text-align: center;
+}
+
+
+h1 {
+
+    color: #baffc9;
+
+    letter-spacing: 4px;
+
+    text-shadow:
+        0 0 15px #00ff88;
+}
+
+
+p {
+
+    color: #839b8c;
+
+}
+
+
+input {
+
+    width: 100%;
+
+    padding: 15px;
+
+    margin-top: 20px;
+
+    background: #020605;
+
+    color: #baffc9;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(150,255,200,.2);
+
+    outline: none;
+
+    font-size: 18px;
+}
+
+
+input:focus {
+
+    box-shadow:
+        0 0 15px rgba(0,255,136,.3);
+
+}
+
+
+button {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    cursor: pointer;
+
+    background: transparent;
+
+    color: #00ff88;
+
+    border: 1px solid #00ff88;
+
+    border-radius: 10px;
+
+    font-size: 18px;
+
+    transition: .3s;
+}
+
+
+button:hover {
+
+    background: #00ff88;
+
+    color: #000;
+
+    box-shadow:
+        0 0 25px rgba(0,255,136,.5);
+
+}
+
+
+.response {
+
+    margin-top: 25px;
+
+    padding: 20px;
+
+    min-height: 90px;
+
+    border-radius: 12px;
+
+    background: rgba(0,0,0,.6);
+
+    opacity: 0;
+
+    transition: .4s;
+
+}
+
+
+.response.show {
+
+    opacity: 1;
+
+}
+
+
+.success {
+
+    color: #9affb5;
+
+    font-size: 26px;
+
+    display: block;
+
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 0 15px #00ff88;
+
+}
+
+
+/* Obraz 500x500 */
+
+.result-image {
+
+    margin-top: 10px;
+
+    width: 500px;
+
+    height: 500px;
+
+    object-fit: contain;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(150,255,200,.25);
+
+    box-shadow:
+        0 0 35px rgba(0,255,150,.3);
+
+    max-width: 100%;
+
+}
+
+</style>
 
 </head>
+
+
 <body>
-<!-- partial:index.partial.html -->
-  <!--I've slightly changed the original code to add light and dark mode toggle for Notion. Credit for the original code from Masahito Leo Takeuchi https://codepen.io/Ma5a -->
-<!-- Move around your cursor, the puppy will look at the direction. Click or tap, and the dog will walk  -->
 
-<body class="dark-mode">
-  <!-- Dark mode/light mode toggle button -->
-  <div class="mode-toggle" id="modeToggle" onclick="toggleMode()">
-    🌙
-  </div>
 
-  <div class="wrapper">
-    <!-- if you want to see the markers, remove d-none from them -->
+<div class="container">
 
-    <!-- indicates dog position -->
-    <div class="marker red d-none"></div>
 
-    <!-- indicates cursor position -->
-    <div class="marker green d-none"></div>
+    <h1>Zagrajmy w grę</h1>
 
-    <!-- indicates dog's 'facing position'-->
-    <div class="marker blue d-none"></div>
+    <p>Podaj kod...</p>
 
-    <div class="dog">
-      <div class="body-wrapper">
-        <div class="body img-bg"></div>
-      </div>
-      <div class="head-wrapper">
-        <div class="head img-bg"></div>
-      </div>
-      <div class="leg-wrapper">
-        <div class="leg one img-bg"></div>
-      </div>
-      <div class="leg-wrapper">
-        <div class="leg two img-bg"></div>
-      </div>
-      <div class="leg-wrapper">
-        <div class="leg three img-bg"></div>
-      </div>
-      <div class="leg-wrapper">
-        <div class="leg four img-bg"></div>
-      </div>
-      <div class="tail-wrapper">
-        <div class="tail img-bg"></div>
-      </div>
+
+    <input
+        id="codeInput"
+        placeholder="Wpisz kod..."
+        autocomplete="off"
+    >
+
+
+    <button onclick="submitCode()">
+        Ok
+    </button>
+
+
+    <div id="responseBox" class="response">
+        Czekam...
     </div>
-  </div>
 
-  <div class="indicator"></div>
-</body>
-<!-- partial -->
-  <script  src="./script.js"></script>
+
+</div>
+
+
+
+<script>
+
+
+function submitCode() {
+
+
+    const code =
+        document.getElementById("codeInput").value.trim();
+
+
+    const responseBox =
+        document.getElementById("responseBox");
+
+
+
+    const clues = {
+
+
+        "Malta": {
+
+            codes: [
+                "Malta",
+                "malta"
+            ],
+
+            text: "Jaki był numer lotu?",
+
+            image: "samolot.webp",
+
+            date: "2026-07-28"
+
+        },
+
+
+        "Lot": {
+
+            codes: [
+                "FR 8900",
+                "FR8900"
+            ],
+
+            text: "Brawo! Zaczynasz łapać! Ilu nas jest?",
+
+            image: "1.png",
+
+            date: "2026-07-28"
+
+        },
+
+
+        "Fryzura": {
+
+            codes: [
+                "łysy",
+				"łysina",
+				"jajo"
+            ],
+
+            text: "Jak nazwałbyś fryzurę swojego świadka?",
+
+            image: "jajko.png",
+
+            date: "2026-07-28"
+
+        },
+
+
+        "Lysy": {
+
+            codes: [
+                "łysy",
+                "lysy"
+            ],
+
+            text: "Brawo! Zaczynasz łapać! Ilu nas jest?",
+
+            image: "1.png",
+
+            date: "2026-07-28"
+
+        },
+
+
+        "2": {
+
+            text: "basket",
+
+            image: "2.png",
+
+            date: "2026-08-03"
+
+        },
+
+
+        "3": {
+
+            text: "hen",
+
+            image: "3.png",
+
+            date: "2026-08-05"
+
+        },
+
+
+        "4": {
+
+            text: "apple",
+
+            image: "4.png",
+
+            date: "2026-08-07"
+
+        },
+
+
+        "5": {
+
+            text: "banana",
+
+            image: "5.png",
+
+            date: "2026-08-09"
+
+        }
+
+
+    };
+
+
+
+    if (!code) {
+
+        responseBox.innerHTML =
+            "Czekam...";
+
+        responseBox.classList.add("show");
+
+        return;
+
+    }
+
+
+
+    let clue = null;
+
+
+
+    for (const key in clues) {
+
+
+        const possibleCodes =
+            clues[key].codes || [key];
+
+
+        if (possibleCodes.includes(code)) {
+
+            clue = clues[key];
+
+            break;
+
+        }
+
+    }
+
+
+
+    if (!clue) {
+
+        responseBox.innerHTML =
+            "Błędny kod!";
+
+        responseBox.classList.add("show");
+
+        return;
+
+    }
+
+
+
+    const today =
+        new Date().toISOString().split("T")[0];
+
+
+
+    if (today < clue.date) {
+
+
+        responseBox.innerHTML = `
+
+            <div>
+
+                <span class="success">
+
+                    Ta wskazówka pojawi się:<br>
+
+                    <strong>${clue.date}</strong>
+
+                </span>
+
+            </div>
+
+        `;
+
+
+    } else {
+
+
+        const imageHtml = clue.image
+
+            ? `
+
+                <img
+
+                    class="result-image"
+
+                    src="${clue.image}"
+
+                    alt="${clue.text}"
+
+                >
+
+              `
+
+            : "";
+
+
+
+        responseBox.innerHTML = `
+
+            <div>
+
+                <span class="success">
+
+                    ${clue.text}
+
+                </span>
+
+
+                ${imageHtml}
+
+
+            </div>
+
+        `;
+
+
+    }
+
+
+
+    responseBox.classList.add("show");
+
+
+}
+
+
+
+document.getElementById("codeInput")
+
+.addEventListener("keypress", function(event) {
+
+
+    if (event.key === "Enter") {
+
+        submitCode();
+
+    }
+
+
+});
+
+
+</script>
+
 
 </body>
 </html>
